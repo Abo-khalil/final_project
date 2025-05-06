@@ -5,19 +5,26 @@ import 'package:final_project/pages/system_page/systempage.dart';
 import 'package:flutter/material.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({super.key});
+  const BottomBar({super.key, required this.userData});
+  final Map<String, dynamic> userData;
 
   @override
   State<BottomBar> createState() => _BottomBar();
 }
 
 class _BottomBar extends State<BottomBar> {
-  List<Widget> pages = [
-    const Homepage(),
-    const Systempage(),
-    const Deviecespage()
-  ];
+  late List<Widget> pages;
   int index = 0;
+
+   @override
+  void initState() {
+    super.initState();
+    pages = [
+      Homepage(userData: widget.userData),
+      const Systempage(),
+      const Deviecespage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

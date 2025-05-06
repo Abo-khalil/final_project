@@ -5,7 +5,8 @@ import 'package:final_project/pages/home_page/widgets/water_tank.dart';
 import 'package:flutter/material.dart';
 
 class HomepageBody extends StatefulWidget {
-  const HomepageBody({super.key});
+  const HomepageBody({super.key, required this.userData});
+  final Map<String, dynamic> userData;
 
   @override
   State<HomepageBody> createState() => _HomepageBodyState();
@@ -25,8 +26,9 @@ class _HomepageBodyState extends State<HomepageBody> {
             children: [
               IconButton(
                   onPressed: () {
+
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const Accountpage()));
+                        builder: (context) => Accountpage(userData: widget.userData,)));
                   },
                   icon: const Icon(
                       size: 45,

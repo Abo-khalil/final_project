@@ -3,7 +3,8 @@ import 'package:final_project/pages/account_page/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 class Acountpagebody extends StatelessWidget {
-  const Acountpagebody({super.key});
+  const Acountpagebody({super.key, required this.userData});
+  final Map<String, dynamic> userData;
 
   @override
   Widget build(BuildContext context) {
@@ -11,17 +12,18 @@ class Acountpagebody extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.account_circle,
                 size: 70,
                 color: Color(0xFFC8C8C8),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Text(
-                "Mohamed Ibrahim",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                userData['role'] ?? "no name",
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
               )
             ],
           ),

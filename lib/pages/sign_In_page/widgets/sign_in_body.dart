@@ -15,6 +15,7 @@ class _SignInBodyState extends State<SignInBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool _isloading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,24 +45,46 @@ class _SignInBodyState extends State<SignInBody> {
               color: Colors.white,
               minWidth: double.infinity,
               height: 55,
-              child: const Text(
-                "Log in",
-                style: TextStyle(
-                    color: Color(0xFF82B587),
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  final success = await AuthService.loginUser(
-                      emailController.text, passwordController.text, context);
-                  if (success) {
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const BottomBar()));
-                  }
-                }
-              }),
+              onPressed: _isloading
+                  ? null
+                  : () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _isloading = true;
+                        });
+                        final userData = await AuthService.loginUser(
+                            emailController.text,
+                            passwordController.text,
+                            context);
+                        setState(() {
+                          _isloading = false;
+                        });
+                        if (userData != null) {
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      BottomBar(userData: userData)));
+                          print(userData);
+                        }
+                      }
+                    },
+              child: _isloading
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Text(
+                      "Log in",
+                      style: TextStyle(
+                          color: Color(0xFF82B587),
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
+                    )),
         ),
         Row(
           children: [
@@ -87,4 +110,3 @@ class _SignInBodyState extends State<SignInBody> {
     );
   }
 }
-

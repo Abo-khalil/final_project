@@ -14,6 +14,13 @@ class _SignupState extends State<Signup> {
     return Scaffold(
       backgroundColor: const Color(0xff39B579),
       appBar: AppBar(
+        title: const Center(
+          child: Text(
+            "Sign up",
+            style: TextStyle(
+                fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ),
         backgroundColor: const Color(0xff39B579),
       ),
       body: const Padding(

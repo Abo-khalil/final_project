@@ -1,3 +1,4 @@
+import 'package:final_project/core/services/auth_services.dart';
 import 'package:final_project/pages/bottom_nav_bar/navigation_bar.dart';
 import 'package:final_project/pages/sign_In_page/sign_in.dart';
 import 'package:final_project/pages/signup_page/widgets/textform.dart';
@@ -11,22 +12,36 @@ class SignupBody extends StatefulWidget {
 }
 
 class _SignupBodyState extends State<SignupBody> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _addressController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const Center(
-          child: Text(
-            "Sign up",
-            style: TextStyle(
-                fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
+        Textform(
+          formkey: _formKey,
+          firstNameController: _firstNameController,
+          lastNameController: _lastNameController,
+          addressController: _addressController,
+          emailController: _emailController,
+          passwordController: _passwordController,
         ),
-        const SizedBox(
-          height: 55,
-        ),
-        const Textform(),
         const SizedBox(
           height: 30,
         ),
@@ -42,9 +57,33 @@ class _SignupBodyState extends State<SignupBody> {
                     fontSize: 26,
                     fontWeight: FontWeight.bold),
               ),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const BottomBar()));
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  bool isSuccess = await AuthService.registerUser(
+                    firstName: _firstNameController.text,
+                    lastName: _lastNameController.text,
+                    email: _emailController.text,
+                    address: _addressController.text,
+                    password: _passwordController.text,
+                    context: context,
+                  );
+                  if (isSuccess) {
+                    final userData = await AuthService.loginUser(
+                      _emailController.text,
+                      _passwordController.text,
+                      context,
+                    );
+
+                    if (userData != null) {
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => BottomBar(userData: userData),
+                        ),
+                      );
+                    }
+                  }
+                }
               }),
         ),
         Row(
