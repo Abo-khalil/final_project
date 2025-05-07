@@ -16,7 +16,7 @@ class _BottomBar extends State<BottomBar> {
   late List<Widget> pages;
   int index = 0;
 
-   @override
+  @override
   void initState() {
     super.initState();
     pages = [

@@ -18,6 +18,7 @@ class _SignupBodyState extends State<SignupBody> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isloading = false;
 
   @override
   void dispose() {
@@ -50,41 +51,59 @@ class _SignupBodyState extends State<SignupBody> {
               color: Colors.white,
               minWidth: double.infinity,
               height: 55,
-              child: const Text(
-                "Sign up",
-                style: TextStyle(
-                    color: Color(0xFF82B587),
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  bool isSuccess = await AuthService.registerUser(
-                    firstName: _firstNameController.text,
-                    lastName: _lastNameController.text,
-                    email: _emailController.text,
-                    address: _addressController.text,
-                    password: _passwordController.text,
-                    context: context,
-                  );
-                  if (isSuccess) {
-                    final userData = await AuthService.loginUser(
-                      _emailController.text,
-                      _passwordController.text,
-                      context,
-                    );
+              onPressed: _isloading
+                  ? null
+                  : () async {
+                      if (_formKey.currentState!.validate()) {
+                         setState(() {
+                          _isloading = true;
+                        });
+                        bool isSuccess = await AuthService.registerUser(
+                          firstName: _firstNameController.text,
+                          lastName: _lastNameController.text,
+                          email: _emailController.text,
+                          address: _addressController.text,
+                          password: _passwordController.text,
+                          context: context,
+                        );
+                         setState(() {
+                          _isloading = false;
+                        });
+                        if (isSuccess) {
+                          final userData = await AuthService.loginUser(
+                            _emailController.text,
+                            _passwordController.text,
+                            context,
+                          );
 
-                    if (userData != null) {
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => BottomBar(userData: userData),
-                        ),
-                      );
-                    }
-                  }
-                }
-              }),
+                          if (userData != null) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BottomBar(userData: userData),
+                              ),
+                            );
+                          }
+                        }
+                      }
+                    },
+              child: _isloading
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Text(
+                      "Sign up",
+                      style: TextStyle(
+                          color: Color(0xFF82B587),
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
+                    )),
         ),
         Row(
           children: [
