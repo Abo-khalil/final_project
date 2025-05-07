@@ -1,3 +1,4 @@
+import 'package:final_project/pages/sign_In_page/sign_in.dart';
 import 'package:final_project/pages/signup_page/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,6 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Final project',
-        home: Signup());
+        home: SignIn());
   }
 }
