@@ -1,3 +1,4 @@
+import 'package:final_project/pages/system_create/create_system.dart';
 import 'package:flutter/material.dart';
 
 class SystemActivate extends StatefulWidget {
@@ -10,10 +11,43 @@ class SystemActivate extends StatefulWidget {
 class _SystemActivateState extends State<SystemActivate> {
   bool isactivated = false;
 
+  void _onSelected(String value) {
+    switch (value) {
+      case 'edit':
+        Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const CreateSystem()));
+        
+        break;
+      case 'delete':
+       
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('System Delete')),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          PopupMenuButton<String>(
+          onSelected: _onSelected,
+          itemBuilder: (context) => [
+            const PopupMenuItem<String>(
+              value: 'edit',
+              child: Text('Edit',style: TextStyle(color: Colors.green),),
+            ),
+            const PopupMenuItem<String>(
+              value: 'delete',
+              child: Text('Delete',style: TextStyle(color: Colors.red),),
+            ),
+          ],
+          icon: const Icon(Icons.more_vert),
+        ),
+        ]
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

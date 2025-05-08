@@ -10,13 +10,13 @@ class SystempageBody extends StatefulWidget {
 
 class _SystempageBodyState extends State<SystempageBody> {
   List sys = [
-    {"name": "Lavender", "img": "images/50d10ad4698214455e68c9a817e40efe.png"},
-    {"name": "Tagetes", "img": "images/tagetes.png"},
-    {"name": "Tomato", "img": "images/tomato.png"},
-    {"name": "Peas", "img": "images/peas.png"},
-    {"name": "Peas", "img": "images/peas.png"},
-    {"name": "Peas", "img": "images/peas.png"},
-    {"name": "Peas", "img": "images/peas.png"},
+    {"name": "Lavender",},
+    {"name": "Tagetes",},
+    {"name": "Tomato", },
+    {"name": "Peas", },
+    {"name": "Peas", },
+    {"name": "Peas", },
+    {"name": "Peas", },
   ];
 
   @override
