@@ -1,3 +1,4 @@
+import 'package:final_project/pages/forget_password/forgetPassword.dart';
 import 'package:flutter/material.dart';
 
 class Signinform extends StatefulWidget {
@@ -106,6 +107,15 @@ class _SigninformState extends State<Signinform> {
                 }
                 return null;
               },
+            ),
+            Row(
+              children: [
+                const Spacer(),
+                TextButton(onPressed: (){
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Forgetpassword()));
+                }, child: const Text("Forget password?",style: TextStyle(color: Colors.white),))
+              ],
             ),
           ],
         ));

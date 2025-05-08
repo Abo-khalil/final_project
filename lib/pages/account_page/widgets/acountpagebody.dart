@@ -1,5 +1,6 @@
 import 'package:final_project/pages/account_page/widgets/alertmassege.dart';
 import 'package:final_project/pages/account_page/widgets/customwidget.dart';
+import 'package:final_project/pages/contact_us/contactus.dart';
 import 'package:flutter/material.dart';
 
 class Acountpagebody extends StatelessWidget {
@@ -41,7 +42,10 @@ class Acountpagebody extends StatelessWidget {
           Customwidget(
             text: "Contact us",
             icon: const Icon(Icons.arrow_right_outlined),
-            onTap: () {},
+            onTap: () {
+               Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Contactus()));
+            },
           ),
           const SizedBox(
             height: 10,
