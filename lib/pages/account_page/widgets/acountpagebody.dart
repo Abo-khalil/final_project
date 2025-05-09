@@ -1,7 +1,11 @@
+import 'package:final_project/pages/account_page/accountpage.dart';
 import 'package:final_project/pages/account_page/widgets/alertmassege.dart';
 import 'package:final_project/pages/account_page/widgets/customwidget.dart';
+import 'package:final_project/pages/bottom_nav_bar/navigation_bar.dart';
 import 'package:final_project/pages/contact_us/contactus.dart';
+import 'package:final_project/pages/sign_In_page/sign_in.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Acountpagebody extends StatelessWidget {
   const Acountpagebody({super.key, required this.userData});
@@ -43,8 +47,8 @@ class Acountpagebody extends StatelessWidget {
             text: "Contact us",
             icon: const Icon(Icons.arrow_right_outlined),
             onTap: () {
-               Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const Contactus()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const Contactus()));
             },
           ),
           const SizedBox(
@@ -56,11 +60,20 @@ class Acountpagebody extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return const Alertmassege(
-                        titeltext: "Logout",
-                        contenttext: "Are you sure you want to logout?",
-                        button1: "Cancel",
-                        button2: "Logout");
+                    return Alertmassege(
+                      titeltext: "Logout",
+                      contenttext: "Are you sure you want to logout?",
+                      button1: "Cancel",
+                      button2: "Logout",
+                      onConfirm: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.remove('token');
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (_) => const SignIn()),
+                          (route) => false,
+                        );
+                      },
+                    );
                   });
             },
           ),

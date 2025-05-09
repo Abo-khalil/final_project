@@ -47,12 +47,14 @@ class Deviecespage extends StatelessWidget {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return const Alertmassege(
-                              titeltext: "Turn on",
-                              contenttext:
-                                  "To connect devices, you need to turn on your phone’s Blutooth.",
-                              button1: "Cancel",
-                              button2: "Turn on");
+                          return Alertmassege(
+                            titeltext: "Turn on",
+                            contenttext:
+                                "To connect devices, you need to turn on your phone’s Blutooth.",
+                            button1: "Cancel",
+                            button2: "Turn on",
+                            onConfirm: () {},
+                          );
                         });
                   },
                   child: const Text(

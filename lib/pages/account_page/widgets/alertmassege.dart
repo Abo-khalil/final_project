@@ -7,11 +7,13 @@ class Alertmassege extends StatelessWidget {
     required this.contenttext,
     required this.button1,
     required this.button2,
+    required this.onConfirm,
   });
   final String titeltext;
   final String contenttext;
   final String button1;
   final String button2;
+  final VoidCallback onConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class Alertmassege extends StatelessWidget {
           onPressed: () {
             // logout logic
             Navigator.pop(context);
+            onConfirm();
           },
           child: Text(
             button2,
