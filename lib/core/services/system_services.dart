@@ -61,4 +61,39 @@ class SystemServices {
       );
     }
   }
+
+
+
+ static Future<dynamic> fetchGlobalSystemData() async {
+  final url = Uri.parse(
+    'https://automatic-irrigation-system-eirp.vercel.app/api/system/system-globle',
+  );
+
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) return 'No token found in SharedPreferences.';
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data;
+    } else if (response.statusCode == 401) {
+      return 'Unauthorized: Invalid or expired token.';
+    } else {
+      return 'Failed with status ${response.statusCode}: ${response.body}';
+    }
+  } catch (e) {
+    return 'Error: $e';
+  }
+}
+
 }

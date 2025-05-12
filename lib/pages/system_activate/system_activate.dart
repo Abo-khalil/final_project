@@ -2,7 +2,8 @@ import 'package:final_project/pages/system_create/create_system.dart';
 import 'package:flutter/material.dart';
 
 class SystemActivate extends StatefulWidget {
-  const SystemActivate({super.key});
+  const SystemActivate({super.key, required this.system});
+  final Map<String, dynamic> system;
 
   @override
   State<SystemActivate> createState() => _SystemActivateState();
@@ -29,6 +30,13 @@ class _SystemActivateState extends State<SystemActivate> {
 
   @override
   Widget build(BuildContext context) {
+    final system = widget.system;
+
+    final name = system["name"] ?? "No name";
+    final description = system["description"] ?? "No description";
+    final amountWater = system["amountWater"]?.toString() ?? "-";
+    final irrigationEvery = system["IrrigationEvery"]?.toString() ?? "-";
+    final duration = system["duration"]?.toString() ?? "-";
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -52,58 +60,58 @@ class _SystemActivateState extends State<SystemActivate> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('Lavender',
+                Text(name,
                     style:
-                        TextStyle(fontSize: 45, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 45, fontWeight: FontWeight.bold)),
               ],
             ),
             const SizedBox(height: 10),
-            const Text(
-              "Lavender is preferred to be grown in a sandy\nsoil and during the growing season, water when the soil is dry to the touch. Watering Amount aim to give around 2.5 to 3.8 cm of water per week.",
-              style: TextStyle(color: Color(0xFF5E5E5E), fontSize: 16),
+            Text(
+              description,
+              style: const TextStyle(color: Color(0xFF5E5E5E), fontSize: 16),
             ),
             const SizedBox(height: 40),
-            const Row(
+             Row(
               children: [
-                Text(
+                const Text(
                   "Amount of water",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
-                  "15 liters",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  "$amountWater liters",
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ],
             ),
             const SizedBox(height: 15),
-            const Row(
+             Row(
               children: [
-                Text(
+                const Text(
                   "Irrigation every",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
-                  "7 days",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  "$irrigationEvery hours",
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ],
             ),
             const SizedBox(height: 15),
-            const Row(
+             Row(
               children: [
-                Text(
+                const Text(
                   "Watering Duration",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
-                  "5 min",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  "$duration min",
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ],
             ),

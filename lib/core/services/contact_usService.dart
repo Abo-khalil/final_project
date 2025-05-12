@@ -32,10 +32,9 @@ class ContactUsservice {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['message'] == "send Message") {
+        print('Status code: ${response.statusCode}');
         return "success";
-      } 
-      
-      else {
+      } else {
         return "Unexpected response from server";
       }
     } else {

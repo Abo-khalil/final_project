@@ -1,7 +1,5 @@
-import 'package:final_project/pages/account_page/accountpage.dart';
 import 'package:final_project/pages/account_page/widgets/alertmassege.dart';
 import 'package:final_project/pages/account_page/widgets/customwidget.dart';
-import 'package:final_project/pages/bottom_nav_bar/navigation_bar.dart';
 import 'package:final_project/pages/contact_us/contactus.dart';
 import 'package:final_project/pages/sign_In_page/sign_in.dart';
 import 'package:flutter/material.dart';
