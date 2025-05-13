@@ -30,6 +30,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+venv/
+
 
 # Symbolication related
 app.*.symbols
