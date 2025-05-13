@@ -2,13 +2,25 @@
 *.class
 *.log
 *.pyc
+*.pyo
 *.swp
 .DS_Store
+Thumbs.db
+ehthumbs.db
+.Trash-*/
+__pycache__/
 .atom/
 .buildlog/
 .history
 .svn/
 migrate_working_dir/
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.env/
+.venv/
 
 # IntelliJ related
 *.iml
@@ -30,8 +42,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-venv/
-
 
 # Symbolication related
 app.*.symbols
