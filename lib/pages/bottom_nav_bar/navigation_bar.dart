@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:final_project/pages/ai_page/ai_Page.dart';
 import 'package:final_project/pages/devices_page/deviecespage.dart';
 import 'package:final_project/pages/home_page/homepage.dart';
 import 'package:final_project/pages/system_page/systempage.dart';
@@ -22,6 +23,7 @@ class _BottomBar extends State<BottomBar> {
     pages = [
       Homepage(userData: widget.userData),
       const Systempage(),
+      const AiPage(),
       const Deviecespage(),
     ];
   }
@@ -52,7 +54,12 @@ class _BottomBar extends State<BottomBar> {
               size: 35,
             ),
             Icon(
-              Icons.bluetooth,
+              Icons.smart_toy,
+              color: Colors.white,
+              size: 35,
+            ),
+            Icon(
+              Icons.wifi,
               color: Colors.white,
               size: 35,
             ),

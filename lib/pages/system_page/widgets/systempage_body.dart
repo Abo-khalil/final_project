@@ -80,6 +80,7 @@ class _SystempageBodyState extends State<SystempageBody> {
                                 child: Card(
                                   color: const Color(0xFFA1E592),
                                   elevation: 3,
+                                  // ignore: deprecated_member_use
                                   shadowColor: Colors.grey.withOpacity(0.4),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),

@@ -16,11 +16,10 @@ class _SystemActivateState extends State<SystemActivate> {
     switch (value) {
       case 'edit':
         Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const CreateSystem()));
-        
+            MaterialPageRoute(builder: (context) => const CreateSystem()));
+
         break;
       case 'delete':
-       
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('System Delete')),
         );
@@ -38,34 +37,38 @@ class _SystemActivateState extends State<SystemActivate> {
     final irrigationEvery = system["IrrigationEvery"]?.toString() ?? "-";
     final duration = system["duration"]?.toString() ?? "-";
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          PopupMenuButton<String>(
+      appBar: AppBar(actions: [
+        PopupMenuButton<String>(
           onSelected: _onSelected,
           itemBuilder: (context) => [
             const PopupMenuItem<String>(
               value: 'edit',
-              child: Text('Edit',style: TextStyle(color: Colors.green),),
+              child: Text(
+                'Edit',
+                style: TextStyle(color: Colors.green),
+              ),
             ),
             const PopupMenuItem<String>(
               value: 'delete',
-              child: Text('Delete',style: TextStyle(color: Colors.red),),
+              child: Text(
+                'Delete',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ],
           icon: const Icon(Icons.more_vert),
         ),
-        ]
-      ),
+      ]),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-             Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(name,
-                    style:
-                        const TextStyle(fontSize: 45, fontWeight: FontWeight.bold)),
+                    style: const TextStyle(
+                        fontSize: 45, fontWeight: FontWeight.bold)),
               ],
             ),
             const SizedBox(height: 10),
@@ -74,7 +77,7 @@ class _SystemActivateState extends State<SystemActivate> {
               style: const TextStyle(color: Color(0xFF5E5E5E), fontSize: 16),
             ),
             const SizedBox(height: 40),
-             Row(
+            Row(
               children: [
                 const Text(
                   "Amount of water",
@@ -83,12 +86,13 @@ class _SystemActivateState extends State<SystemActivate> {
                 const Spacer(),
                 Text(
                   "$amountWater liters",
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ],
             ),
             const SizedBox(height: 15),
-             Row(
+            Row(
               children: [
                 const Text(
                   "Irrigation every",
@@ -97,12 +101,13 @@ class _SystemActivateState extends State<SystemActivate> {
                 const Spacer(),
                 Text(
                   "$irrigationEvery hours",
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ],
             ),
             const SizedBox(height: 15),
-             Row(
+            Row(
               children: [
                 const Text(
                   "Watering Duration",
@@ -111,7 +116,8 @@ class _SystemActivateState extends State<SystemActivate> {
                 const Spacer(),
                 Text(
                   "$duration min",
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ],
             ),
