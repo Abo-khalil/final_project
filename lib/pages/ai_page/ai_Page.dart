@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:final_project/core/services/ai.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 
 class AiPage extends StatefulWidget {
   const AiPage({super.key});
@@ -19,6 +17,7 @@ class _AiPageState extends State<AiPage> {
   Uint8List? _imageBytes;
   List<dynamic> _predictions = [];
   final ImagePicker _picker = ImagePicker();
+  bool _isLoading = false;
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(
@@ -27,42 +26,33 @@ class _AiPageState extends State<AiPage> {
     );
 
     if (pickedFile != null) {
-      final bytes = await pickedFile.readAsBytes();
+      setState(() {
+        _isLoading = true;
+      });
 
-      final uri = Uri.parse(
-          'http://127.0.0.1:8000/predict');
-
-      final request = http.MultipartRequest('POST', uri)
-        ..files.add(
-          http.MultipartFile.fromBytes(
-            'file',
-            bytes,
-            filename: pickedFile.name,
-            contentType: MediaType('image', 'jpeg'),
-          ),
-        );
-
-      final response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseBody = await response.stream.bytesToString();
-        final data = json.decode(responseBody);
+      try {
+        final response = await ImageService.uploadImage(pickedFile);
 
         setState(() {
-          _imageBytes = bytes;
+          _imageBytes = response['bytes'];
           _imageFile = File(pickedFile.path);
-          _predictions = data.isEmpty
-              ? [
-                  {'class_name': 'Unknown', 'confidence': 0.0}
-                ]
-              : data;
+          _predictions = response['result'];
+          _isLoading = false;
         });
-      } else {
-        print("Upload failed with status: ${response.statusCode}");
+      } catch (e) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("An error occurred: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +97,12 @@ class _AiPageState extends State<AiPage> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 30),
-                if (_predictions.isNotEmpty)
+                if (_isLoading)
+                  const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: CircularProgressIndicator(color: Colors.green),
+                  ),
+                if (!_isLoading && _predictions.isNotEmpty)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

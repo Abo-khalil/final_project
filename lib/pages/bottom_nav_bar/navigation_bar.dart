@@ -24,7 +24,7 @@ class _BottomBar extends State<BottomBar> {
       Homepage(userData: widget.userData),
       const Systempage(),
       const AiPage(),
-      const Deviecespage(),
+      const DevicesPage(),
     ];
   }
 
