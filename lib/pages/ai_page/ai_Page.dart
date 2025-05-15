@@ -30,7 +30,7 @@ class _AiPageState extends State<AiPage> {
       final bytes = await pickedFile.readAsBytes();
 
       final uri = Uri.parse(
-          'http://127.0.0.1:8000/predict'); // غيّر IP عند الاختبار على الهاتف
+          'http://127.0.0.1:8000/predict');
 
       final request = http.MultipartRequest('POST', uri)
         ..files.add(
