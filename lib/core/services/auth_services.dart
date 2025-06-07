@@ -22,7 +22,9 @@ class AuthService {
 
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['token']);
+        await prefs.setString('userId', data['userId']);
         final token = prefs.getString('token');
+
         print(token);
         return data;
       } else {

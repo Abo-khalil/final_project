@@ -1,3 +1,4 @@
+import 'package:final_project/core/services/Add_Water_Tank.dart';
 import 'package:final_project/pages/create_Tank/createTank.dart';
 import 'package:final_project/pages/tank_details/widgets/tankCard.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,24 @@ class Tankdetails extends StatefulWidget {
 }
 
 class _TankdetailsState extends State<Tankdetails> {
+   List<WaterTank> tanks = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTanks();
+  }
+
+   Future<void> fetchTanks() async {
+    final fetchedTanks = await getWaterTanks();  // استدعاء دالة جلب الخزانات
+    setState(() {
+      tanks = fetchedTanks;
+      isLoading = false;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,20 +47,30 @@ class _TankdetailsState extends State<Tankdetails> {
         appBar: AppBar(
           backgroundColor: const Color(0xFFFAFAFA),
         ),
-        body: const Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Text("Water Tank Levels",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.w400)),
-                ],
-              ),
-              Tankcard(tankName: "Tank one", percentage: 0.73)
-            ],
-          ),
-        ));
+        body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : tanks.isEmpty
+                ? const Center(child: Text('No tanks found'))
+                : ListView.builder(
+                    itemCount: tanks.length,
+                    itemBuilder: (context, index) {
+                      final tank = tanks[index];
+                      double percentage = 0;
+                      if (tank.maxTank != 0) {
+                        percentage = tank.amountTank / tank.maxTank;
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Tankcard(
+                          tankName: tank.nameTank,
+                          percentage: percentage.clamp(0, 1),
+                        ),
+                      );
+                    },
+                  ),
+      ),
+    );
   }
 }

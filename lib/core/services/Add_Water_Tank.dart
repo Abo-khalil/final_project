@@ -19,7 +19,7 @@ class WaterTank {
 
   factory WaterTank.fromJson(Map<String, dynamic> json) {
     return WaterTank(
-      id: json['_id'] ?? '', // تأكد من اسم المفتاح حسب API
+      id: json['_id'] ?? '', 
       nameTank: json['nameTank'] ?? '',
       amountTank: json['amountTank'] ?? 0,
       maxTank: json['maxTank'] ?? 0,
@@ -47,7 +47,7 @@ Future<void> createWaterTank({
       return;
     }
 
-    final url = Uri.parse('https://automatic-irrigation-system.vercel.app//api/watertank/');
+    final url = Uri.parse('https://automatic-irrigation-system.vercel.app/api/watertank/');
 
     final response = await http.post(
       url,
@@ -73,16 +73,19 @@ Future<void> createWaterTank({
   }
 }
 
-// Get All Water Tanks
+// Get Water Tanks by User ID
 Future<List<WaterTank>> getWaterTanks() async {
   try {
-    final token = await _getToken();
-    if (token == null) {
-      print('Error: Token not found. Make sure the user is logged in.');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final userId = prefs.getString('userId'); // تأكد أنك خزّنت userId مسبقًا
+
+    if (token == null || userId == null) {
+      print('Error: Token or User ID not found. Make sure the user is logged in.');
       return [];
     }
 
-    final url = Uri.parse('https://automatic-irrigation-system.vercel.app/api/watertank');
+    final url = Uri.parse('https://automatic-irrigation-system.vercel.app/api/watertank/$userId');
 
     final response = await http.get(
       url,
@@ -92,7 +95,8 @@ Future<List<WaterTank>> getWaterTanks() async {
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      final List<dynamic> data = responseBody['data'];
       return data.map((json) => WaterTank.fromJson(json)).toList();
     } else {
       print('Failed to get water tanks: ${response.statusCode} - ${response.body}');
@@ -103,5 +107,6 @@ Future<List<WaterTank>> getWaterTanks() async {
     return [];
   }
 }
+
 
 
