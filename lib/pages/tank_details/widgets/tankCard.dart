@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Tankcard extends StatelessWidget {
-  const Tankcard({super.key, required this.tankName, required this.percentage});
+  const Tankcard({super.key, required this.tankName, required this.displayValue, required this.percentText});
   final String tankName;
-  final double percentage;
+   final double displayValue; // for LinearProgressIndicator
+  final int percentText; 
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +22,10 @@ class Tankcard extends StatelessWidget {
                   fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 10),
-            ClipRRect(
+                ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: LinearProgressIndicator(
-                value: percentage,
+                value: displayValue,
                 minHeight: 12,
                 backgroundColor: Colors.blue[100],
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.lightBlue),
@@ -32,15 +33,12 @@ class Tankcard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              "${(percentage * 100).toInt()}%",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[700],
-                  fontWeight: FontWeight.w500),
-            )
+              '$percentText%',
+              style: TextStyle(fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.w500),
+            ),
           ],
         ),
       ),
-    );;
+    );
   }
 }

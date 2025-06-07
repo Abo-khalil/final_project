@@ -57,15 +57,19 @@ class _TankdetailsState extends State<Tankdetails> {
                     itemCount: tanks.length,
                     itemBuilder: (context, index) {
                       final tank = tanks[index];
-                      double percentage = 0;
-                      if (tank.maxTank != 0) {
-                        percentage = tank.amountTank / tank.maxTank;
+                      debugPrint('Tank: ${tank.nameTank}, amount: ${tank.amountTank}, max: ${tank.maxTank}');
+                      double rawPercentage = 0.0;
+                      if (tank.maxTank > 0) {
+                        rawPercentage = tank.amountTank / tank.maxTank;
                       }
-                      return Padding(
+                      double displayValue = rawPercentage.clamp(0.0, 1.0);
+                      int percentText = (rawPercentage * 100).toInt().clamp(0, 100);
+                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Tankcard(
                           tankName: tank.nameTank,
-                          percentage: percentage.clamp(0, 1),
+                          displayValue: displayValue,
+                          percentText: percentText,
                         ),
                       );
                     },

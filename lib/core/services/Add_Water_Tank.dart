@@ -34,7 +34,7 @@ Future<String?> _getToken() async {
 }
 
 // Create Water Tank
-Future<void> createWaterTank({
+Future<bool> createWaterTank({
   required String nameTank,
   required int amountTank,
   required int maxTank,
@@ -42,10 +42,12 @@ Future<void> createWaterTank({
 }) async {
   try {
     final token = await _getToken();
-    if (token == null) {
-      print('Error: Token not found. Make sure the user is logged in.');
-      return;
+    if (token == null || token.isEmpty) {
+      print('Error: Token not found or empty.');
+      return false;
     }
+    
+    print('Using token: $token'); // Debug
 
     final url = Uri.parse('https://automatic-irrigation-system.vercel.app/api/watertank/');
 
@@ -63,13 +65,17 @@ Future<void> createWaterTank({
       }),
     );
 
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print('Water tank created successfully.');
+      return true;
     } else {
-      print('Failed to create water tank: ${response.statusCode} - ${response.body}');
+      return false;
     }
   } catch (e) {
-    print('An error occurred while creating the water tank: $e');
+    print('Error creating water tank: $e');
+    return false;
   }
 }
 
