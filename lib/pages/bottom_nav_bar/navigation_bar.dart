@@ -59,7 +59,7 @@ class _BottomBar extends State<BottomBar> {
               size: 35,
             ),
             Icon(
-              Icons.wifi,
+              Icons.bluetooth,
               color: Colors.white,
               size: 35,
             ),
