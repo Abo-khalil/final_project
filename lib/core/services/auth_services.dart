@@ -7,7 +7,7 @@ class AuthService {
   static Future<Map<String, dynamic>?> loginUser(
       String email, String password, BuildContext context) async {
     final url = Uri.parse(
-        'https://automatic-irrigation-system-eirp.vercel.app/api/auth/login');
+        'https://automatic-irrigation-system.vercel.app/api/auth/login');
 
     try {
       final response = await http.post(
@@ -53,7 +53,7 @@ class AuthService {
     required BuildContext context,
   }) async {
     final url = Uri.parse(
-        'https://automatic-irrigation-system-eirp.vercel.app/api/auth/register');
+        'https://automatic-irrigation-system.vercel.app/api/auth/register');
 
     try {
       final response = await http.post(
