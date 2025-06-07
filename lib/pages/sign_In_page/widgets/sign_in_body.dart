@@ -19,94 +19,96 @@ class _SignInBodyState extends State<SignInBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        const Center(
-          child: Text(
-            "Sign In",
-            style: TextStyle(
-                fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ),
-        const SizedBox(
-          height: 55,
-        ),
-        Signinform(
-          formKey: _formKey,
-          emailController: emailController,
-          passwordController: passwordController,
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Center(
-          child: MaterialButton(
-              color: Colors.white,
-              minWidth: double.infinity,
-              height: 55,
-              onPressed: _isloading
-                  ? null
-                  : () async {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        final userData = await AuthService.loginUser(
-                            emailController.text,
-                            passwordController.text,
-                            context);
-                        setState(() {
-                          _isloading = false;
-                        });
-                        if (userData != null) {
-                          // ignore: use_build_context_synchronously
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      BottomBar(userData: userData)));
-                          print(userData);
-                        }
-                      }
-                    },
-              child: _isloading
-                  ? const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                  : const Text(
-                      "Log in",
-                      style: TextStyle(
-                          color: Color(0xFF82B587),
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold),
-                    )),
-        ),
-        Row(
-          children: [
-            const Text(
-              "Don’t have an account?",
-              style: TextStyle(color: Colors.white, fontSize: 14),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const Center(
+            child: Text(
+              "Sign In",
+              style: TextStyle(
+                  fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
             ),
-            TextButton(
-                child: const Text(
-                  "Sign up",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const Signup()));
-                })
-          ],
-        ),
-      ],
+          ),
+          const SizedBox(
+            height: 55,
+          ),
+          Signinform(
+            formKey: _formKey,
+            emailController: emailController,
+            passwordController: passwordController,
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Center(
+            child: MaterialButton(
+                color: Colors.white,
+                minWidth: double.infinity,
+                height: 55,
+                onPressed: _isloading
+                    ? null
+                    : () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            _isloading = true;
+                          });
+                          final userData = await AuthService.loginUser(
+                              emailController.text,
+                              passwordController.text,
+                              context);
+                          setState(() {
+                            _isloading = false;
+                          });
+                          if (userData != null) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        BottomBar(userData: userData)));
+                            print(userData);
+                          }
+                        }
+                      },
+                child: _isloading
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                    : const Text(
+                        "Log in",
+                        style: TextStyle(
+                            color: Color(0xFF82B587),
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold),
+                      )),
+          ),
+          Row(
+            children: [
+              const Text(
+                "Don’t have an account?",
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+              TextButton(
+                  child: const Text(
+                    "Sign up",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const Signup()));
+                  })
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

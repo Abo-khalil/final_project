@@ -1,5 +1,6 @@
 import 'package:final_project/core/services/auth_services.dart';
 import 'package:final_project/pages/bottom_nav_bar/navigation_bar.dart';
+import 'package:final_project/pages/otp_register/otpregister.dart';
 import 'package:final_project/pages/sign_In_page/sign_in.dart';
 import 'package:final_project/pages/signup_page/widgets/textform.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class _SignupBodyState extends State<SignupBody> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isloading = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -30,65 +31,66 @@ class _SignupBodyState extends State<SignupBody> {
     super.dispose();
   }
 
+  Future<void> _sendOtpAndNavigate() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      final otpResponse = await AuthService.sendOtp(_emailController.text);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (otpResponse == "OTP sent successfully") {
+        if (!mounted) return;
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => OtpRegister(
+              email: _emailController.text,
+              password: _passwordController.text,
+              firstName: _firstNameController.text,
+              lastName: _lastNameController.text,
+              address: _addressController.text,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(otpResponse ?? "فشل في إرسال رمز التحقق"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Textform(
-          formkey: _formKey,
-          firstNameController: _firstNameController,
-          lastNameController: _lastNameController,
-          addressController: _addressController,
-          emailController: _emailController,
-          passwordController: _passwordController,
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Center(
-          child: MaterialButton(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Textform(
+            formkey: _formKey,
+            firstNameController: _firstNameController,
+            lastNameController: _lastNameController,
+            addressController: _addressController,
+            emailController: _emailController,
+            passwordController: _passwordController,
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Center(
+            child: MaterialButton(
               color: Colors.white,
               minWidth: double.infinity,
               height: 55,
-              onPressed: _isloading
-                  ? null
-                  : () async {
-                      if (_formKey.currentState!.validate()) {
-                         setState(() {
-                          _isloading = true;
-                        });
-                        bool isSuccess = await AuthService.registerUser(
-                          firstName: _firstNameController.text,
-                          lastName: _lastNameController.text,
-                          email: _emailController.text,
-                          address: _addressController.text,
-                          password: _passwordController.text,
-                          context: context,
-                        );
-                         setState(() {
-                          _isloading = false;
-                        });
-                        if (isSuccess) {
-                          final userData = await AuthService.loginUser(
-                            _emailController.text,
-                            _passwordController.text,
-                            context,
-                          );
-
-                          if (userData != null) {
-                            // ignore: use_build_context_synchronously
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    BottomBar(userData: userData),
-                              ),
-                            );
-                          }
-                        }
-                      }
-                    },
-              child: _isloading
+              onPressed: _isLoading ? null : _sendOtpAndNavigate,
+              child: _isLoading
                   ? const SizedBox(
                       width: 24,
                       height: 24,
@@ -100,32 +102,38 @@ class _SignupBodyState extends State<SignupBody> {
                   : const Text(
                       "Sign up",
                       style: TextStyle(
-                          color: Color(0xFF82B587),
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold),
-                    )),
-        ),
-        Row(
-          children: [
-            const Text(
-              "Already have an account?",
-              style: TextStyle(color: Colors.white, fontSize: 14),
+                        color: Color(0xFF82B587),
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
             ),
-            TextButton(
+          ),
+          Row(
+            children: [
+              const Text(
+                "Already have an account?",
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+              TextButton(
                 child: const Text(
                   "Log in",
                   style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const SignIn()));
-                })
-          ],
-        ),
-      ],
+                    MaterialPageRoute(builder: (context) => const SignIn()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

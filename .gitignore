@@ -15,6 +15,22 @@ __pycache__/
 .svn/
 migrate_working_dir/
 
+# Gradle files
+.gradle/
+**/gradle/
+**/gradlew
+**/gradlew.bat
+
+# Gradle build output
+/build/
+**/build/
+
+# Local configuration properties
+local.properties
+settings.gradle
+settings.gradle.kts
+gradle.properties
+
 # Virtual Environments
 venv/
 env/

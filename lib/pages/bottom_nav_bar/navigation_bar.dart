@@ -54,7 +54,7 @@ class _BottomBar extends State<BottomBar> {
               size: 35,
             ),
             Icon(
-              Icons.smart_toy,
+             Icons.eco,
               color: Colors.white,
               size: 35,
             ),

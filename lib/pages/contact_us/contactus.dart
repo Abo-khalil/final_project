@@ -11,16 +11,16 @@ class Contactus extends StatefulWidget {
 class _ContactusState extends State<Contactus> {
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
-  final emailController = TextEditingController();
+  final emailController =
+      TextEditingController(); 
   final messageController = TextEditingController();
   bool _isLoading = false;
 
   Future<void> handleSendMessage() async {
     setState(() => _isLoading = true);
 
-    final result = await ContactUsservice.sendMessage(
-      name: nameController.text,
-      email: emailController.text,
+    final result = await ContactUsService.sendMessage(
+      subject: nameController.text,
       message: messageController.text,
     );
 

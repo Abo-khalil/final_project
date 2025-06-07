@@ -37,7 +37,10 @@ class _SystemActivateState extends State<SystemActivate> {
     final irrigationEvery = system["IrrigationEvery"]?.toString() ?? "-";
     final duration = system["duration"]?.toString() ?? "-";
     return Scaffold(
-      appBar: AppBar(actions: [
+      backgroundColor: const Color(0xFFFAFAFA),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFFAFAFA),
+        actions: [
         PopupMenuButton<String>(
           onSelected: _onSelected,
           itemBuilder: (context) => [
