@@ -108,7 +108,7 @@ static Future<void> editSystem({
     required String systemId,
   }) async {
     final url = Uri.parse(
-        'https://automatic-irrigation-system.vercel.app/api/system/681ca692dd4f31e99227f664');
+        'https://automatic-irrigation-system.vercel.app/api/system/$systemId');
 
     final body = {
       'name': name,

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,7 +21,7 @@ class WaterTank {
 
   factory WaterTank.fromJson(Map<String, dynamic> json) {
     return WaterTank(
-      id: json['_id'] ?? '', 
+      id: json['_id'] ?? '',
       nameTank: json['nameTank'] ?? '',
       amountTank: json['amountTank'] ?? 0,
       maxTank: json['maxTank'] ?? 0,
@@ -46,10 +48,11 @@ Future<bool> createWaterTank({
       print('Error: Token not found or empty.');
       return false;
     }
-    
+
     print('Using token: $token'); // Debug
 
-    final url = Uri.parse('https://automatic-irrigation-system.vercel.app/api/watertank/');
+    final url = Uri.parse(
+        'https://automatic-irrigation-system.vercel.app/api/watertank/');
 
     final response = await http.post(
       url,
@@ -87,11 +90,13 @@ Future<List<WaterTank>> getWaterTanks() async {
     final userId = prefs.getString('userId'); // تأكد أنك خزّنت userId مسبقًا
 
     if (token == null || userId == null) {
-      print('Error: Token or User ID not found. Make sure the user is logged in.');
+      print(
+          'Error: Token or User ID not found. Make sure the user is logged in.');
       return [];
     }
 
-    final url = Uri.parse('https://automatic-irrigation-system.vercel.app/api/watertank/$userId');
+    final url = Uri.parse(
+        'https://automatic-irrigation-system.vercel.app/api/watertank/$userId');
 
     final response = await http.get(
       url,
@@ -105,7 +110,8 @@ Future<List<WaterTank>> getWaterTanks() async {
       final List<dynamic> data = responseBody['data'];
       return data.map((json) => WaterTank.fromJson(json)).toList();
     } else {
-      print('Failed to get water tanks: ${response.statusCode} - ${response.body}');
+      print(
+          'Failed to get water tanks: ${response.statusCode} - ${response.body}');
       return [];
     }
   } catch (e) {
@@ -114,5 +120,64 @@ Future<List<WaterTank>> getWaterTanks() async {
   }
 }
 
+Future<void> editWaterTank({
+  required BuildContext context,
+  required String tankId,
+  required String nameTank,
+  required int amountTank,
+  required int maxTank,
+  required int minTank,
+}) async {
+  final url = Uri.parse(
+    'https://automatic-irrigation-system.vercel.app/api/watertank/$tankId',
+  );
 
+  final body = {
+    "nameTank": nameTank,
+    "amountTank": amountTank,
+    "maxTank": maxTank,
+    "minTank": minTank,
+  };
 
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No token found. Please log in again.')),
+      );
+      return;
+    }
+
+    log("Sending PUT request to edit tank...");
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    );
+
+    log("Response status: ${response.statusCode}");
+    log("Response body: ${response.body}");
+    print('Editing tank with id: $tankId');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Tank updated successfully!')),
+      );
+      Navigator.of(context).pop(); // إغلاق النافذة إذا كان تعديل من Dialog
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed: ${response.body}')),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $e')),
+    );
+  }
+}
