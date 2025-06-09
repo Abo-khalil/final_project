@@ -1,3 +1,4 @@
+import 'package:final_project/pages/system_activate/edit_system_dialog.dart';
 import 'package:final_project/pages/system_create/create_system.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +15,10 @@ class _SystemActivateState extends State<SystemActivate> {
 
   void _onSelected(String value) {
     switch (value) {
-      case 'edit':
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const CreateSystem()));
+     case 'edit':
+  showEditSystemDialog(widget.system, context);
+  break;
 
-        break;
       case 'delete':
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('System Delete')),

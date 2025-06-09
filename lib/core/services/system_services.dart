@@ -103,7 +103,7 @@ static Future<void> editSystem({
     required String description,
     required int amountWater,
     required int irrigationEvery,
-    required int duration,
+    required String duration,
     required String type,
     required String systemId,
   }) async {

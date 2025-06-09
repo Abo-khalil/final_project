@@ -1,0 +1,2 @@
+C:/Users/Qal3a/Desktop/Abo/final_project/android/app/.cxx/Debug/12m64dws/x86/CMakeFiles/edit_cache.dir
+C:/Users/Qal3a/Desktop/Abo/final_project/android/app/.cxx/Debug/12m64dws/x86/CMakeFiles/rebuild_cache.dir
