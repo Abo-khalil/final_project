@@ -1,3 +1,4 @@
+import 'package:final_project/core/services/embedded.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -9,20 +10,38 @@ class MoistureRate extends StatefulWidget {
 }
 
 class _MoistureRateState extends State<MoistureRate> {
+  double? humidity;
+
+  @override
+  void initState() {
+    super.initState();
+    loadHumidity();
+  }
+
+  Future<void> loadHumidity() async {
+    final result = await Embedded.fetchHumidity('6846daf95674545af5c5dd10');
+    setState(() {
+      humidity = result;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    double percent = (humidity ?? 0) / 100;
+
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 2,
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            )
-          ]),
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          )
+        ],
+      ),
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
@@ -30,21 +49,15 @@ class _MoistureRateState extends State<MoistureRate> {
             padding: EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Row(
-                  children: [
-                    Icon(Icons.eco, color: Colors.green, size: 20),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      "Moisture Rate",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
+                Icon(Icons.eco, color: Colors.green, size: 20),
+                SizedBox(width: 5),
+                Text(
+                  "Moisture Rate",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
                 ),
                 Spacer(),
                 Text(
@@ -60,35 +73,33 @@ class _MoistureRateState extends State<MoistureRate> {
             child: Row(
               children: [
                 const Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("System: Lavender", style: TextStyle(fontSize: 14)),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text("Watering after: 3 days",
-                        style: TextStyle(fontSize: 14)),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text("Status: Stable",
-                        style: TextStyle(fontSize: 14, color: Colors.green)),
-                    SizedBox(
-                      height: 5,
-                    ),
-                  ],
-                )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("System: Lavender", style: TextStyle(fontSize: 14)),
+                      SizedBox(height: 5),
+                      Text("Watering after: 3 days",
+                          style: TextStyle(fontSize: 14)),
+                      SizedBox(height: 5),
+                      Text("Status: Stable",
+                          style: TextStyle(fontSize: 14, color: Colors.green)),
+                      SizedBox(height: 5),
+                    ],
+                  ),
+                ),
                 Expanded(
                   child: CircularPercentIndicator(
                     radius: 50.0,
                     lineWidth: 15.0,
-                    percent: 0.37,
-                    center: const Text("37%",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                            color: Colors.green)),
+                    percent: percent.clamp(0.0, 1.0),
+                    center: Text(
+                      "${(percent * 100).toInt()}%",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Colors.green,
+                      ),
+                    ),
                     progressColor: Colors.green,
                     backgroundColor: Colors.green.shade100,
                     circularStrokeCap: CircularStrokeCap.round,
@@ -96,7 +107,7 @@ class _MoistureRateState extends State<MoistureRate> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

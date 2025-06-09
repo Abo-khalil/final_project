@@ -9,7 +9,7 @@ class ImageService {
   static Future<Map<String, dynamic>> uploadImage(XFile pickedFile) async {
     final bytes = await pickedFile.readAsBytes();
 
-    final uri = Uri.parse('https://apiai-production-4a1b.up.railway.app/predict');
+    final uri = Uri.parse('https://api-ai--e-wzq.fly.dev/predict');
 
     final request = http.MultipartRequest('POST', uri)
       ..files.add(

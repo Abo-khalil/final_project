@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class Pumpwidget extends StatefulWidget {
@@ -8,7 +9,29 @@ class Pumpwidget extends StatefulWidget {
 }
 
 class _PumpwidgetState extends State<Pumpwidget> {
+  final DatabaseReference _dbRef =
+      FirebaseDatabase.instance.ref().child('PumpState');
   bool isOn = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // متابعة التحديث من Firebase
+    _dbRef.onValue.listen((event) {
+      final data = event.snapshot.value;
+      if (data != null && mounted) {
+        setState(() {
+          isOn = data == 1;
+        });
+      }
+    });
+  }
+
+  void togglePump() {
+    final newState = isOn ? 0 : 1;
+    _dbRef.set(newState); // إرسال التحديث إلى Firebase
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,36 +83,33 @@ class _PumpwidgetState extends State<Pumpwidget> {
             ),
           ),
           Center(
-              child: GestureDetector(
-            onTap: () {
-              setState(() {
-                isOn = !isOn;
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 8,
-                      spreadRadius: 2,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Icon(
-                  Icons.power_settings_new,
-                  size: 32,
-                  color: isOn ? Colors.green : Colors.grey,
+            child: GestureDetector(
+              onTap: togglePump,
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Icon(
+                    Icons.power_settings_new,
+                    size: 32,
+                    color: isOn ? Colors.green : Colors.grey,
+                  ),
                 ),
               ),
             ),
-          ))
+          )
         ],
       ),
     );

@@ -66,7 +66,7 @@ class SystemServices {
 
  static Future<dynamic> fetchGlobalSystemData() async {
   final url = Uri.parse(
-    'https://automatic-irrigation-system.vercel.app/api/system/system-globle',
+    'https://automatic-irrigation-system.vercel.app/api/system/',
   );
 
   try {
