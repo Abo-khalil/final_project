@@ -1,5 +1,4 @@
 import 'package:final_project/core/services/auth_services.dart';
-import 'package:final_project/pages/bottom_nav_bar/navigation_bar.dart';
 import 'package:final_project/pages/otp_register/otpregister.dart';
 import 'package:final_project/pages/sign_In_page/sign_in.dart';
 import 'package:final_project/pages/signup_page/widgets/textform.dart';

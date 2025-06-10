@@ -1,9 +1,13 @@
+
+import 'dart:developer';
+
 import 'package:final_project/core/services/embedded.dart';
+import 'package:final_project/core/util/constatnt.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class MoistureRate extends StatefulWidget {
-  const MoistureRate({super.key});
+  const MoistureRate({super.key, });
 
   @override
   State<MoistureRate> createState() => _MoistureRateState();
@@ -16,6 +20,7 @@ class _MoistureRateState extends State<MoistureRate> {
   void initState() {
     super.initState();
     loadHumidity();
+    log(globalSystem.toString());
   }
 
   Future<void> loadHumidity() async {
@@ -72,18 +77,18 @@ class _MoistureRateState extends State<MoistureRate> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                const Expanded(
+                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("System: Lavender", style: TextStyle(fontSize: 14)),
-                      SizedBox(height: 5),
-                      Text("Watering after: 3 days",
-                          style: TextStyle(fontSize: 14)),
-                      SizedBox(height: 5),
-                      Text("Status: Stable",
+                      Text("System Name: ${globalSystem['name'] ?? 'N/A'}", style: TextStyle(fontSize: 14)),
+                      const SizedBox(height: 5),
+                      Text("Duration: ${globalSystem['duration'] ?? 'N/A'}",
+                          style: const TextStyle(fontSize: 14)),
+                      const SizedBox(height: 5),
+                      const Text("Status: Stable",
                           style: TextStyle(fontSize: 14, color: Colors.green)),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                     ],
                   ),
                 ),

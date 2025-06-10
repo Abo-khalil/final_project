@@ -8,7 +8,7 @@ class ContactUsService {
     required String message,
   }) async {
     final url = Uri.parse(
-        'https://automatic-irrigation-system-eirp.vercel.app/api/user/cuntact-us');
+        'https://automatic-irrigation-system.vercel.app/api/user/cuntact-us');
 
     final body = {
       "subject": subject.trim(),

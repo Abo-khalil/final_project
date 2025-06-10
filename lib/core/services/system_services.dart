@@ -141,7 +141,7 @@ static Future<void> editSystem({
       log("Response received");
       if (response.statusCode == 200 || response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('System added successfully!')),
+          const SnackBar(content: Text('System edited successfully!')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -166,7 +166,7 @@ Future<bool> deleteSystem(String systemId) async {
       return false;
     }
 
-    final url = Uri.parse('https://automatic-irrigation-system.vercel.app/api/system/67f911a7ae724f11f3bddfab');
+    final url = Uri.parse('https://automatic-irrigation-system.vercel.app/api/system/$systemId');
 
     final response = await http.delete(
       url,

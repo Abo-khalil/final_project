@@ -33,14 +33,7 @@ class Acountpagebody extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Customwidget(
-            text: "Permissions",
-            icon: const Icon(Icons.arrow_right_outlined),
-            onTap: () {},
-          ),
-          const SizedBox(
-            height: 10,
-          ),
+          
           Customwidget(
             text: "Contact us",
             icon: const Icon(Icons.arrow_right_outlined),

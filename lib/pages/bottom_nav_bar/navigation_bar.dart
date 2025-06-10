@@ -24,7 +24,6 @@ class _BottomBar extends State<BottomBar> {
       Homepage(userData: widget.userData),
       const Systempage(),
       const AiPage(),
-      const DevicesPage(),
     ];
   }
 
@@ -55,11 +54,6 @@ class _BottomBar extends State<BottomBar> {
             ),
             Icon(
              Icons.eco,
-              color: Colors.white,
-              size: 35,
-            ),
-            Icon(
-              Icons.wifi,
               color: Colors.white,
               size: 35,
             ),

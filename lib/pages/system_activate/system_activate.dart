@@ -1,5 +1,8 @@
+import 'dart:developer';
+
+import 'package:final_project/core/services/system_services.dart';
+import 'package:final_project/core/util/constatnt.dart';
 import 'package:final_project/pages/system_activate/edit_system_dialog.dart';
-import 'package:final_project/pages/system_create/create_system.dart';
 import 'package:flutter/material.dart';
 
 class SystemActivate extends StatefulWidget {
@@ -13,17 +16,19 @@ class SystemActivate extends StatefulWidget {
 class _SystemActivateState extends State<SystemActivate> {
   bool isactivated = false;
 
-  void _onSelected(String value) {
+  Future<void> _onSelected(String value) async {
     switch (value) {
      case 'edit':
   showEditSystemDialog(widget.system, context);
   break;
 
-      case 'delete':
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('System Delete')),
-        );
-        break;
+     case 'delete':
+  await SystemServices().deleteSystem(widget.system['_id']);
+  if (mounted) {
+    // التحقق من أن الـ Widget لا يزال موجودًا
+    Navigator.pop(context); // العودة إلى الشاشة السابقة بعد الحذف
+  }
+  break;
     }
   }
 
@@ -69,9 +74,12 @@ class _SystemActivateState extends State<SystemActivate> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(name,
-                    style: const TextStyle(
-                        fontSize: 45, fontWeight: FontWeight.bold)),
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Text(name,
+                      style: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold)),
+                ),
               ],
             ),
             const SizedBox(height: 10),
@@ -126,24 +134,27 @@ class _SystemActivateState extends State<SystemActivate> {
             ),
             const Spacer(),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    isactivated ? Colors.red : const Color(0xFF39B579),
-                minimumSize: const Size(300, 60),
-              ),
-              onPressed: () {
-                setState(() {
-                  isactivated = !isactivated;
-                });
-              },
-              child: Text(
-                isactivated ? "Deactivate" : "Activate",
-                style: const TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            )
+  style: ElevatedButton.styleFrom(
+    backgroundColor:
+        isactivated ? Colors.red : const Color(0xFF39B579),
+    minimumSize: const Size(300, 60),
+  ),
+  onPressed: () {
+    setState(() {
+      isactivated = !isactivated;
+      globalSystem = widget.system;
+    });
+          log(globalSystem.toString()+'-----------');
+  },
+  child: Text(
+    isactivated ? "Deactivate" : "Activate",
+    style: const TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+        color: Colors.white),
+  ),
+)
+
           ],
         ),
       ),

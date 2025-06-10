@@ -17,43 +17,46 @@ class _HomepageBodyState extends State<HomepageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0, right: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                  onPressed: () {
-
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Accountpage(userData: widget.userData,)));
-                  },
-                  icon: const Icon(
-                      size: 45,
-                      color: Color(0xFFC8C8C8),
-                      Icons.account_circle)),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0, right: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                    onPressed: () {
+      
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Accountpage(userData: widget.userData,)));
+                    },
+                    icon: const Icon(
+                        size: 45,
+                        color: Color(0xFFC8C8C8),
+                        Icons.account_circle)),
+              ],
+            ),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.all(16),
-          child: MoistureRate(),
-        ),
-        const Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Expanded(child: Pumpwidget()),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(child: WaterTank()),
-            ],
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: MoistureRate(),
           ),
-        )
-      ],
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Expanded(child: Pumpwidget()),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(child: WaterTank()),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
